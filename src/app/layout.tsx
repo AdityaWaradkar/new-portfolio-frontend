@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Aditya Waradkar" }],
   creator: "Aditya Waradkar",
   publisher: "Aditya Waradkar",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  // metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   alternates: {
     canonical: "/",
   },
