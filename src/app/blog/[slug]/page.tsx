@@ -120,15 +120,15 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               // The AWS Constraint
             </h2>
             <p>
-              I figured, "No big deal, I'll just go to the AWS console, make a
-              new key pair, and attach it." But if you've messed around with AWS
-              enough, you know they don't let you do that.
+              I figured, &quot;No big deal, I&apos;ll just go to the AWS console, make a
+              new key pair, and attach it.&quot; But if you&apos;ve messed around with AWS
+              enough, you know they don&apos;t let you do that.
             </p>
             <blockquote className="border-l-4 border-purple-500/40 pl-6 sm:pl-8 italic text-white text-lg sm:text-xl my-6 sm:my-8 bg-white/[0.01] py-4 sm:py-6 pr-4 sm:pr-6 rounded-r-xl">
               For security reasons, AWS only injects the public key once into
-              the server's backend file system when you first launch the
+              the server&apos;s backend file system when you first launch the
               instance. If you lose it from your local machine, the AWS console
-              won't let you just generate a new one for an existing server.
+              won&apos;t let you just generate a new one for an existing server.
             </blockquote>
             <p>
               Instead of giving up and nuking the instance to start over, I
@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </h2>
             <blockquote className="border-l-4 border-purple-500/40 pl-4 italic text-white text-base bg-white/[0.01] py-4 pr-3 rounded-r-xl">
               AWS only injects the public key once when you launch the instance.
-              You can't generate a new one for an existing server.
+              You can&apos;t generate a new one for an existing server.
             </blockquote>
             <p className="text-base">
               Instead of starting over, I performed a root volume swap.
@@ -252,7 +252,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               // The Rescue Operation Step-by-Step
             </h2>
             <p className="text-lg sm:text-xl">
-              Since I couldn't fix the files from inside the server, I had to
+              Since I couldn&apos;t fix the files from inside the server, I had to
               find a way to edit its hard drive from the outside. Here is
               exactly how I pulled off the operation:
             </p>
@@ -337,7 +337,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                     <code className="bg-white/10 text-purple-300 px-1.5 py-0.5 rounded font-mono text-sm sm:text-base">
                       /dev/xvda
                     </code>
-                    . I then clicked <strong>Actions &gt; Detach Volume</strong>
+                    . I then clicked <strong>Actions - Detach Volume</strong>
                     .
                   </p>
                 </div>
@@ -465,7 +465,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                     ────▶
                   </div>
                   <div className="text-white bg-white/10 px-2 py-0.5 rounded border border-white/5 text-[10px] sm:text-xs font-bold">
-                    Slot: /dev/sdf
+                    Slot: /dev/sdf (OS maps as /dev/xvdf)
                   </div>
                 </div>
               </div>
@@ -528,7 +528,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </h3>
 
             <p className="text-base sm:text-lg md:text-xl">
-              Now came the critical part. I needed to access the locked server's
+              Now came the critical part. I needed to access the locked server&apos;s
               hard drive through my temporary helper server. I connected to
               Server B using SSH with my new rescue key, just like I normally
               would with any EC2 instance.
@@ -541,7 +541,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 lsblk
               </code>{" "}
               command, which lists all available disk drives and their
-              partitions. This confirmed that my original server's root volume
+              partitions. This confirmed that my original server&apos;s root volume
               was sitting there as an unmounted device at{" "}
               <code className="bg-white/10 text-purple-300 px-1.5 py-0.5 rounded font-mono text-sm sm:text-base">
                 /dev/xvdf1
@@ -551,7 +551,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
             <p className="text-base sm:text-lg md:text-xl">
               Think of it like plugging a USB drive into your computer. The
-              drive is physically connected, but you can't access its files
+              drive is physically connected, but you can&apos;t access its files
               until you mount it to a folder. I needed to create a mount point
               (a folder where the drive would be accessible) and then mount the
               volume.
@@ -565,13 +565,13 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 If your rescue server or original server is a newer AWS
                 generation (like T3, T3a, M5, or C5), AWS exposes these drives
                 as NVMe devices. Instead of /dev/xvdf1, running lsblk will show
-                your drive as something like /dev/nvme1n1p1. If that's the case
+                your drive as something like /dev/nvme1n1p1. If that&apos;s the case
                 for you, just swap the drive name in the commands below!
               </p>
             </div>
 
             <p className="text-base sm:text-lg md:text-xl">
-              Here's exactly what I typed into the terminal:
+              Here&apos;s exactly what I typed into the terminal:
             </p>
 
             <pre className="bg-black/60 border border-white/5 rounded-lg sm:rounded-xl p-4 sm:p-6 font-mono text-sm sm:text-base md:text-xl text-purple-300 overflow-x-auto leading-relaxed shadow-lg">
@@ -585,7 +585,11 @@ sudo mount /dev/xvdf1 /mnt/rescue
 cd /mnt/rescue/home/ubuntu/.ssh/
 
 # Open the authorized_keys file to add our new public key
-sudo nano authorized_keys`}
+sudo nano authorized_keys
+
+# Fix ownership and permissions to ensure SSH daemon doesn't reject it
+sudo chown 1000:1000 authorized_keys
+sudo chmod 600 authorized_keys`}
             </pre>
 
             <p className="text-base sm:text-lg md:text-xl">
@@ -595,13 +599,13 @@ sudo nano authorized_keys`}
             <ul className="list-disc pl-6 sm:pl-8 space-y-3 text-base sm:text-lg md:text-xl text-white">
               <li>
                 <strong>sudo mkdir /mnt/rescue</strong> — Creates a new folder
-                called "rescue" inside the /mnt directory. This will be our
+                called &quot;rescue&quot; inside the /mnt directory. This will be our
                 window into the locked server.
               </li>
               <li>
                 <strong>sudo mount /dev/xvdf1 /mnt/rescue</strong> — Attaches
-                the locked server's root volume to our newly created folder. Now
-                we can browse its files just like we're inside the original
+                the locked server&apos;s root volume to our newly created folder. Now
+                we can browse its files just like we&apos;re inside the original
                 server.
               </li>
               <li>
@@ -614,6 +618,10 @@ sudo nano authorized_keys`}
                 authorized_keys file in a text editor. This file contains all
                 the public keys that are allowed to SSH into the server.
               </li>
+              <li>
+                <strong>sudo chown 1000:1000 authorized_keys && sudo chmod 600 authorized_keys</strong> — Ensures that the original 
+                &apos;ubuntu&apos; user owns the file with strict read/write security permissions. Without this, the SSH daemon on boot will completely reject the connection out of safety paranoia.
+              </li>
             </ul>
 
             <p className="text-base sm:text-lg md:text-xl mt-6">
@@ -625,7 +633,7 @@ sudo nano authorized_keys`}
               </code>{" "}
               private key. Think of it like changing the lock on your front door
               — I was giving myself a new key while making sure the old one
-              wouldn't work anymore.
+              wouldn&apos;t work anymore.
             </p>
 
             <p className="text-base sm:text-lg md:text-xl">
@@ -650,7 +658,7 @@ exit`}
                 cd ~
               </code>{" "}
               command takes me out of the mounted filesystem, which is important
-              because you can't unmount a drive while you're inside it. Then{" "}
+              because you can&apos;t unmount a drive while you&apos;re inside it. Then{" "}
               <code className="bg-white/10 text-purple-300 px-1.5 py-0.5 rounded font-mono text-sm sm:text-base">
                 sudo umount /mnt/rescue
               </code>{" "}
@@ -669,7 +677,7 @@ exit`}
             </h2>
 
             <p className="text-base sm:text-lg md:text-xl">
-              With the new public key injected into the locked server's
+              With the new public key injected into the locked server&apos;s
               filesystem, I went back to the AWS Console. I detached the volume
               from Server B and reattached it to Server A, making sure to map it
               back to its original root device path:{" "}
@@ -680,7 +688,7 @@ exit`}
             </p>
 
             <p className="text-base sm:text-lg md:text-xl">
-              Think of it like this: I had borrowed Server B's "disk reader" to
+              Think of it like this: I had borrowed Server B&apos;s &quot;disk reader&quot; to
               modify the files on my locked hard drive, and now I was putting
               that hard drive back into Server A exactly where it belonged.
             </p>
@@ -702,7 +710,7 @@ exit`}
               <p className="text-white/80 text-base sm:text-lg md:text-xl">
                 The root volume of an EC2 instance is just an EBS block storage
                 device that can be detached and attached to other instances. If
-                you lose your SSH key, you don't lose your data — you just need
+                you lose your SSH key, you don&apos;t lose your data — you just need
                 to find another way to access the hard drive and update the
                 authorized_keys file.
               </p>
