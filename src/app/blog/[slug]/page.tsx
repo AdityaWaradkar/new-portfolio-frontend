@@ -97,13 +97,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               <strong>Ubuntu</strong> image, things weren't that simple.
             </p>
             <p>
-              First, Ubuntu doesn't come with the AWS Systems Manager (SSM)
-              agent pre-installed and active out of the box like Amazon Linux
-              does, and I hadn't attached an IAM instance profile role to the
-              server to allow SSM access anyway. Second, EC2 Instance Connect
-              wasn't working either because my security groups and subnet
-              configurations were locked down strictly for standard inbound SSH
-              traffic on port 22 from my own IP address.
+              First, even though modern Ubuntu AMIs actually do come with the
+              AWS Systems Manager (SSM) agent pre-installed, it was completely
+              useless to me here. Why? Because I hadn't attached an IAM instance
+              profile role to the server to grant SSM permission to talk to the
+              AWS backend. Second, EC2 Instance Connect wasn't an option either
+              because my security groups and subnet configurations were locked
+              down strictly for standard inbound SSH traffic on port 22 from my
+              own IP address.
             </p>
             <p>
               There were no backdoors or pre-installed monitoring agents
@@ -259,7 +260,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             <div className="space-y-8 sm:space-y-12 border-l-2 border-white/5 pl-4 sm:pl-8 md:pl-16 ml-0 sm:ml-1">
               {/* Step 1 */}
               <div className="relative space-y-4 sm:space-y-6">
-                <div className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500" aria-hidden="true" />
+                <div
+                  className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500"
+                  aria-hidden="true"
+                />
                 <div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
                     Step 1: Stopping the main server
@@ -275,25 +279,40 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 {/* Step Diagram 1 - Hidden on Mobile */}
                 <div className="w-full bg-white/[0.01] border border-white/5 rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm flex flex-wrap items-center justify-between gap-2 shadow-md hidden sm:flex">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" aria-hidden="true" />
+                    <span
+                      className="w-2 h-2 rounded-full bg-red-500 animate-pulse"
+                      aria-hidden="true"
+                    />
                     <span className="text-white/60">State:</span>
                     <span className="text-red-400 font-bold">RUNNING</span>
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ─────▶
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-neutral-600" aria-hidden="true" />
+                    <span
+                      className="w-2 h-2 rounded-full bg-neutral-600"
+                      aria-hidden="true"
+                    />
                     <span className="text-white/60">Action:</span>
                     <span className="text-white bg-white/10 px-2 py-0.5 rounded border border-white/5 text-[10px] sm:text-xs">
                       Stop Node
                     </span>
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ─────▶
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
+                    <span
+                      className="w-2 h-2 rounded-full bg-green-500"
+                      aria-hidden="true"
+                    />
                     <span className="text-white/60">Target:</span>
                     <span className="text-green-400 font-bold">STOPPED</span>
                   </div>
@@ -302,7 +321,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
               {/* Step 2 */}
               <div className="relative space-y-4 sm:space-y-6">
-                <div className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500" aria-hidden="true" />
+                <div
+                  className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500"
+                  aria-hidden="true"
+                />
                 <div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
                     Step 2: Unplugging the virtual storage
@@ -333,7 +355,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   <div className="bg-purple-500/10 border border-purple-500/20 px-2 sm:px-3 py-1 rounded-lg text-purple-300 font-bold text-[10px] sm:text-xs">
                     EBS: /dev/xvda
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ──────▶
                   </div>
                   <div className="text-yellow-400 font-medium bg-yellow-400/10 border border-yellow-400/20 px-2 py-0.5 rounded text-[10px] sm:text-xs">
@@ -344,7 +369,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
               {/* Step 3 */}
               <div className="relative space-y-4 sm:space-y-6">
-                <div className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500" aria-hidden="true" />
+                <div
+                  className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500"
+                  aria-hidden="true"
+                />
                 <div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
                     Step 3: Setting up a rescue helper
@@ -373,7 +401,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       ap-south-1a
                     </span>
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ────▶
                   </div>
                   <div className="flex items-center gap-2">
@@ -381,7 +412,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       Server B
                     </span>
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ────▶
                   </div>
                   <div className="text-purple-300 font-bold bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 text-[10px] sm:text-xs">
@@ -392,7 +426,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
               {/* Step 4 */}
               <div className="relative space-y-4 sm:space-y-6">
-                <div className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500" aria-hidden="true" />
+                <div
+                  className="absolute -left-[21px] sm:-left-[41px] md:-left-[73px] top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0a0a0f] border-2 border-purple-500"
+                  aria-hidden="true"
+                />
                 <div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
                     Step 4: Connecting the drive to the helper
@@ -421,7 +458,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       Server B
                     </span>
                   </div>
-                  <div className="text-white/20 font-light hidden sm:block" aria-hidden="true">
+                  <div
+                    className="text-white/20 font-light hidden sm:block"
+                    aria-hidden="true"
+                  >
                     ────▶
                   </div>
                   <div className="text-white bg-white/10 px-2 py-0.5 rounded border border-white/5 text-[10px] sm:text-xs font-bold">
@@ -516,6 +556,19 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               (a folder where the drive would be accessible) and then mount the
               volume.
             </p>
+
+            <div className="mt-8 p-6 bg-purple-500/10 border border-purple-500/20 rounded-xl">
+              <p className="text-purple-300 font-bold text-lg sm:text-xl mb-2">
+                📌 Nitro Instance Note
+              </p>
+              <p className="text-white/80 text-base sm:text-lg md:text-xl">
+                If your rescue server or original server is a newer AWS
+                generation (like T3, T3a, M5, or C5), AWS exposes these drives
+                as NVMe devices. Instead of /dev/xvdf1, running lsblk will show
+                your drive as something like /dev/nvme1n1p1. If that's the case
+                for you, just swap the drive name in the commands below!
+              </p>
+            </div>
 
             <p className="text-base sm:text-lg md:text-xl">
               Here's exactly what I typed into the terminal:
