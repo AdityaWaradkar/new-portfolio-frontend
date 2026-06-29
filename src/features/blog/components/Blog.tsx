@@ -18,7 +18,7 @@ const BLOG_POSTS: readonly BlogPost[] = [
     slug: "ec2-ssh-key-recovery-volume-swap",
     title: "I accidentally deleted the SSH key to my EC2 instance. Now what?",
     description:
-      "I opened my local machine ready to dive back into my work on an EC2 instance where I had some solid progress going. But when I tried to SSH in, I realized I had accidentally deleted the key to the instance. If you've worked with AWS, you know this is usually the point of no return they block you from just generating or dropping a new key pair onto a running server. With my instance blacked out and standard terminal access completely out of the question, I had to figure out a workaround. What followed was a rescue operation to bypass those cloud constraints and get my files back. Here is exactly how I pulled it off.",
+      "I opened my local machine ready to dive back into an EC2 instance where I had some solid progress going. But the moment I tried to SSH in, reality hit.I had accidentally deleted the private key file. If you've worked with AWS, you know this is usually the point of no return; they block you from simply dropping a new key pair onto a running server. With my instance blacked out and terminal access completely out of the question, I had to figure out a workaround. What followed was an infrastructure rescue operation to bypass those cloud constraints and recover my environment. Here is exactly how I pulled it off.",
     date: "June 29, 2026",
     readTime: "6 min read",
     gradient: "from-purple-500 via-indigo-500 to-blue-500",
