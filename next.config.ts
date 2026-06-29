@@ -1,15 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "ik.imagekit.io",
-        pathname: "/**", // Allows all image paths from your imagekit account
-      },
-    ],
+    domains: ['ik.imagekit.io'],
   },
+  output: 'standalone',
+  poweredByHeader: false,
 };
 
 export default nextConfig;

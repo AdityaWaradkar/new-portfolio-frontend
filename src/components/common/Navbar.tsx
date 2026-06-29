@@ -22,7 +22,6 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHomeScreen, setIsHomeScreen] = useState(true);
 
-  // Handle scroll with throttling
   useEffect(() => {
     let ticking = false;
     
@@ -30,14 +29,9 @@ export default function Navbar() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          
-          // Update scroll state
           setIsScrolled(scrollY > 20);
-          
-          // Check if we're on home screen (top of page)
           setIsHomeScreen(scrollY < 100);
           
-          // Update active section
           const sections = NAV_ITEMS.map(item => item.href.replace("#", ""));
           let currentSection = "homeSection";
           
@@ -51,7 +45,6 @@ export default function Navbar() {
             }
           }
           setActiveSection(currentSection);
-          
           ticking = false;
         });
         ticking = true;
@@ -59,13 +52,11 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Initial check
     handleScroll();
     
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsMenuOpen(false);
@@ -84,7 +75,6 @@ export default function Navbar() {
     };
   }, [isMenuOpen]);
 
-  // Handle smooth scroll with offset
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const targetId = href.replace("#", "");
@@ -114,7 +104,6 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link
             href="#homeSection"
             onClick={(e) => handleNavClick(e, "#homeSection")}
@@ -123,7 +112,6 @@ export default function Navbar() {
             AW
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.href.replace("#", "");
@@ -144,7 +132,6 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Mobile Hamburger Button - Only show on home screen */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50 ${
@@ -174,7 +161,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`md:hidden fixed inset-0 bg-[#0a0a0f]/95 backdrop-blur-lg transition-all duration-300 ${
           isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"

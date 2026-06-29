@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* ===== ROOT VARIABLES ===== */
 :root {
   --background: #0a0a0f;
   --foreground: #ededed;
@@ -8,22 +7,15 @@
   --card-bg: rgba(255, 255, 255, 0.05);
 }
 
-/* ===== THEME CONFIGURATION ===== */
 @theme {
-  /* Font Family */
   --font-raleway: "Raleway", sans-serif;
-
-  /* Color Palettes */
   --color-bg-dark: #0a0a0f;
   --color-card-border: rgba(255, 255, 255, 0.1);
   --color-card-bg: rgba(255, 255, 255, 0.05);
-
-  /* Animations */
   --animate-spin-slow: spin 20s linear infinite;
   --animate-pulse-slow: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ===== CUSTOM UTILITY CLASSES ===== */
 @utility card-base-class {
   background-color: var(--color-card-bg);
   backdrop-filter: blur(8px);
@@ -42,7 +34,6 @@
   }
 }
 
-/* ===== BASE LAYOUT ===== */
 html {
   scroll-behavior: smooth;
   background-color: var(--background);
@@ -56,10 +47,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===== KEYFRAMES ===== */
 @keyframes float-particle {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0) translateX(0);
   }
   50% {
@@ -81,7 +70,6 @@ body {
   }
 }
 
-/* ===== PERFORMANCE OPTIMIZATIONS ===== */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -93,7 +81,6 @@ body {
   }
 }
 
-/* ===== SCROLLBAR STYLING (Optional) ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -112,7 +99,6 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* ===== SELECTION STYLING ===== */
 ::selection {
   background: rgba(139, 92, 246, 0.3);
   color: #ffffff;
@@ -123,13 +109,11 @@ body {
   color: #ffffff;
 }
 
-/* ===== FOCUS VISIBLE FOR ACCESSIBILITY ===== */
 :focus-visible {
   outline: 2px solid #8b5cf6;
   outline-offset: 2px;
 }
 
-/* ===== REDUCED MOTION SAFE DEFAULTS ===== */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

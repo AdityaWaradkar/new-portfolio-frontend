@@ -2,15 +2,12 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
-const PROFILE_PIC = "https://ik.imagekit.io/cs3et6gu9/profile_photo.png";
-
 interface SocialLinkProps {
   href: string;
   iconSvg: React.ReactNode;
   alt: string;
 }
 
-// Extracted social links to constant outside component
 const SOCIAL_LINKS: SocialLinkProps[] = [
   {
     href: "https://github.com/AdityaWaradkar",
@@ -35,18 +32,15 @@ const SOCIAL_LINKS: SocialLinkProps[] = [
   },
 ];
 
-// Get API URL from environment
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function HeroSection() {
   const [visitorCount, setVisitorCount] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [particles, setParticles] = useState<Array<{ top: string; left: string; delay: string; opacity: number }>>([]);
 
-  // Initialize particles only once on mount
   useEffect(() => {
     const count = window.innerWidth < 768 ? 12 : 24;
     const newParticles = Array.from({ length: count }).map((_, i) => ({
@@ -58,11 +52,7 @@ export default function HeroSection() {
     setParticles(newParticles);
   }, []);
 
-  // Hardware Detection & Mouse Parallax Engine
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-
     const handleMouseMove = (e: MouseEvent) => {
       if (window.innerWidth >= 768 && containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -72,16 +62,10 @@ export default function HeroSection() {
       }
     };
 
-    window.addEventListener("resize", checkMobile);
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-
-    return () => {
-      window.removeEventListener("resize", checkMobile);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Secured Polling Engine for Analytics Tracking
   useEffect(() => {
     const fetchVisitorCount = async () => {
       try {
@@ -90,8 +74,7 @@ export default function HeroSection() {
         const data = await res.json();
         setVisitorCount(data.visits);
         setError(null);
-      } catch (err) {
-        console.error("Visitor count error:", err);
+      } catch {
         setError("Counter temporarily offline");
       }
     };
@@ -101,15 +84,14 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  // Memoized visitor count display
   const visitorDisplay = useMemo(() => {
     if (visitorCount !== null) {
       return (
         <>
           <span className="font-bold text-purple-300/90">
             {visitorCount.toLocaleString()}
-          </span>{" "}
-          visitors... and you're one.
+          </span>
+          {" "}visitors... and you're one.
         </>
       );
     }
@@ -125,13 +107,11 @@ export default function HeroSection() {
       ref={containerRef}
       className="relative w-full h-screen overflow-hidden text-white text-center px-4 bg-bg-dark flex flex-col justify-between items-center"
     >
-      {/* Background Overlays */}
       <div className="absolute inset-0 pointer-events-none select-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a2a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a2a_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#2a2a3a_1px,transparent_1px),linear-gradient(to_bottom,#2a2a3a_1px,transparent_1px)] bg-[size:48px_48px] opacity-10" />
       </div>
 
-      {/* Ambient Blurs */}
       <div
         className="absolute top-0 left-0 w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full mix-blend-screen opacity-20 blur-[100px] bg-purple-600 transition-transform duration-500 ease-out pointer-events-none"
         style={{
@@ -145,7 +125,6 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Particle Canvas Layer - Memoized */}
       {particles.length > 0 && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {particles.map((particle, i) => (
@@ -163,7 +142,6 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* Typography Elements Block */}
       <div className="flex flex-col justify-center items-center flex-grow z-10 max-w-4xl mt-16">
         <div className="relative mb-6">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 blur-3xl scale-125 pointer-events-none" />
@@ -184,7 +162,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Analytics and Social Actions Block */}
       <div className="w-full max-w-xs flex flex-col items-center gap-6 pb-12 z-10">
         <div className="flex justify-center gap-8">
           {SOCIAL_LINKS.map((social) => (
@@ -207,7 +184,6 @@ export default function HeroSection() {
           ))}
         </div>
 
-        {/* Real-time Counter Unit */}
         <div className="relative group w-full">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="relative backdrop-blur-sm bg-white/5 rounded-full border border-white/5 hover:border-purple-500/20 px-6 py-2 transition-all duration-300">

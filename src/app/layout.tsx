@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
 
-// Optimize Google Fonts natively inside Next.js
 const raleway = Raleway({
   subsets: ["latin"],
   variable: "--font-raleway",
@@ -12,14 +11,12 @@ const raleway = Raleway({
   fallback: ["system-ui", "sans-serif"],
 });
 
-// Production-Grade Enterprise Metadata Configuration
 export const metadata: Metadata = {
   title: {
     default: "Aditya Waradkar | Full-Stack Systems Engineer & Artist",
     template: "%s | Aditya Waradkar",
   },
-  description:
-    "Portfolio of Aditya Waradkar. Crafting scalable full-stack architectures in Go and MERN alongside realistic sketch artistry.",
+  description: "Portfolio of Aditya Waradkar. Crafting scalable full-stack architectures in Go and MERN alongside realistic sketch artistry.",
   keywords: [
     "Aditya Waradkar",
     "Go Developer",
@@ -33,7 +30,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Aditya Waradkar" }],
   creator: "Aditya Waradkar",
   publisher: "Aditya Waradkar",
-  // metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   alternates: {
     canonical: "/",
   },
@@ -59,7 +55,6 @@ export const metadata: Metadata = {
     title: "Aditya Waradkar | Full-Stack Systems Engineer & Artist",
     description: "Crafting robust backend systems and cloud-native microservices with precision.",
     images: ["https://ik.imagekit.io/cs3et6gu9/profile_photo.png"],
-    creator: "@adityawaradkar",
   },
   robots: {
     index: true,
@@ -75,7 +70,6 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
-// Strict Responsive Viewport Security Configuration
 export const viewport: Viewport = {
   themeColor: "#0a0a0f",
   width: "device-width",
