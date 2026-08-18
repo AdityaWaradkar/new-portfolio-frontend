@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 
 interface Certification {
   name: string;
@@ -86,31 +86,88 @@ const EXPERIENCE: ExperienceItem = {
 const HOBBIES = ["Pencil Sketching", "Painting", "Photography"] as const;
 const HOBBIES_INSTAGRAM = "https://www.instagram.com/adityaa.draws/";
 
+// Helper component for section title - matching hero subtitle style
+const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <h3 className="text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-bold bg-gradient-to-r from-purple-200 via-white to-blue-200 bg-clip-text text-transparent inline-block tracking-wide">
+    {children}
+  </h3>
+);
+
+// Helper component for card items - matching hero card style
+const CardItem: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  as?: 'div' | 'a';
+  href?: string;
+  onClick?: () => void;
+}> = ({ children, className = "", as: Component = 'div', href, onClick }) => {
+  const baseClasses = `bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/20 transition-all duration-300 text-white/80 hover:text-white text-[10px] xs:text-xs sm:text-sm ${className}`;
+  
+  if (Component === 'a') {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseClasses} block w-full h-full px-2.5 py-1.5 sm:px-3 sm:py-2 hover:bg-white/10 rounded-lg`}
+        onClick={onClick}
+      >
+        {children}
+      </a>
+    );
+  }
+  
+  return (
+    <div className={`${baseClasses} px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg`}>
+      {children}
+    </div>
+  );
+};
+
 export default function AboutMe() {
+  // Memoize static data
+  const skillsList = useMemo(() => SKILLS, []);
+  const certificationsList = useMemo(() => CERTIFICATIONS, []);
+  const hobbiesList = useMemo(() => HOBBIES, []);
+
   return (
     <section
       id="aboutSection"
-      className="relative min-h-screen text-white flex items-center justify-center px-4 sm:px-8 pt-[100px] sm:pt-[125px] pb-[50px] sm:pb-[75px] overflow-hidden bg-bg-dark"
+      className="relative min-h-[60vh] md:min-h-screen text-white flex items-center justify-center px-4 sm:px-6 pt-[80px] sm:pt-[100px] md:pt-[120px] pb-12 sm:pb-16 md:pb-20 overflow-hidden bg-bg-dark"
+      aria-label="About Me Section"
     >
-      {/* Background Mesh System */}
+      {/* Background Grid - matching hero section */}
       <div className="absolute inset-0 pointer-events-none select-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a2a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a2a_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#2a2a3a_1px,transparent_1px),linear-gradient(to_bottom,#2a2a3a_1px,transparent_1px)] bg-[size:48px_48px] opacity-10" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#2a2a3a_1px,transparent_1px),linear-gradient(to_bottom,#2a2a3a_1px,transparent_1px)] bg-[size:32px_32px] opacity-25 sm:opacity-35 md:opacity-45" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a2a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a2a_1px,transparent_1px)] bg-[size:16px_16px] opacity-15 sm:opacity-20 md:opacity-25" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0a0a1a_1px,transparent_1px),linear-gradient(to_bottom,#0a0a1a_1px,transparent_1px)] bg-[size:8px_8px] opacity-10 sm:opacity-15 md:opacity-20" />
       </div>
 
-      {/* Ambient Blurs */}
-      <div className="absolute top-20 left-20 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-20 right-20 w-[400px] sm:w-[500px] h-[400px] sm:h-[500px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Ambient Blurs - matching hero section */}
+      <div className="absolute top-20 left-20 w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] md:w-[400px] md:h-[400px] bg-purple-600/5 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-20 right-20 w-[180px] h-[180px] sm:w-[300px] sm:h-[300px] md:w-[450px] md:h-[450px] bg-blue-600/5 rounded-full blur-[80px] sm:blur-[100px] md:blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      {/* Centered content container */}
+      <div className="max-w-5xl w-full relative z-10">
+        {/* About Me Header */}
+        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+          <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-200 via-white to-blue-200 bg-clip-text text-transparent inline-block drop-shadow-[0_0_30px_rgba(128,0,255,0.08)]">
+            About Me
+          </h2>
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+            <div className="h-[1px] w-6 sm:w-8 md:w-10 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+            <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 rotate-45 bg-gradient-to-r from-purple-400 to-blue-400 animate-pulse" />
+            <div className="h-[1px] w-6 sm:w-8 md:w-10 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
           {/* Left Column */}
-          <div className="flex flex-col gap-6 sm:gap-8">
+          <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
+            {/* About Me Text */}
             <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-purple-200 via-white to-blue-200 bg-clip-text text-transparent inline-block">
-                About Me
-              </h2>
-              <p className="leading-relaxed text-gray-300/90 text-lg sm:text-xl md:text-2xl">
+              <p className="leading-relaxed text-gray-300/90 text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-lg text-center lg:text-left">
                 Experienced in architecting robust backend systems utilizing
                 DevOps practices and cloud-native frameworks. Primarily
                 leverages Go for backend engineering and AWS for building
@@ -121,91 +178,79 @@ export default function AboutMe() {
               </p>
             </div>
 
-            {/* Experience Card Block */}
-            <div className="space-y-3 sm:space-y-4">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white/90">
-                Experience
-              </h3>
-              <div className="card-base-class text-lg group w-full">
-                <div className="font-semibold mb-1 group-hover:text-black">
+            {/* Experience Section */}
+            <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
+              <SectionTitle>Experience</SectionTitle>
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/20 transition-all duration-300 rounded-lg p-3 sm:p-4 md:p-5">
+                <div className="font-semibold mb-0.5 text-[10px] xs:text-xs sm:text-sm md:text-base text-white/90">
                   {EXPERIENCE.role} - {EXPERIENCE.company}
                   <br />
-                  <span className="text-base sm:text-lg text-white/60 group-hover:text-black/70">
+                  <span className="text-[8px] xs:text-[10px] sm:text-xs md:text-sm text-white/60">
                     {EXPERIENCE.duration}
                   </span>
                 </div>
-                <p className="text-base sm:text-lg text-white/70 mt-2 group-hover:text-black/80 leading-relaxed">
+                <p className="text-[8px] xs:text-[10px] sm:text-xs md:text-sm text-white/70 mt-1.5 leading-relaxed">
                   {EXPERIENCE.description}
                 </p>
               </div>
             </div>
 
-            {/* Hobbies Card Block */}
-            <div className="space-y-3 sm:space-y-4">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white/90">
-                Hobbies & Interests
-              </h3>
-              <div className="flex flex-wrap gap-2 sm:gap-4">
-                {HOBBIES.map((hobby) => (
+            {/* Hobbies Section */}
+            <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
+              <SectionTitle>Hobbies &amp; Interests</SectionTitle>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {hobbiesList.map((hobby) => (
                   <div
                     key={hobby}
-                    className="card-base-class text-lg min-w-[120px] sm:min-w-[140px] p-0"
+                    className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/20 transition-all duration-300 rounded-lg p-0"
                   >
-                    <a
+                    <CardItem
+                      as="a"
                       href={HOBBIES_INSTAGRAM}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`View ${hobby} on Instagram`}
-                      className="px-5 py-3.5 hover:text-black transition-colors duration-300 block w-full h-full"
+                      className="min-w-[80px] sm:min-w-[90px]"
                     >
                       {hobby}
-                    </a>
+                    </CardItem>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right Column (Skills Grid) */}
-          <div className="flex flex-col gap-6 sm:gap-8">
-            <div className="space-y-3 sm:space-y-4">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white/90">
-                Skills
-              </h3>
-              <div className="flex flex-wrap gap-2.5 sm:gap-3.5">
-                {SKILLS.map((skill) => (
-                  <div
+          {/* Right Column - Skills */}
+          <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
+            <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
+              <SectionTitle>Skills</SectionTitle>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {skillsList.map((skill) => (
+                  <CardItem
                     key={skill}
-                    className="card-base-class text-lg min-w-[90px] sm:min-w-[110px] text-center select-none py-2 px-4"
+                    className="min-w-[60px] sm:min-w-[70px] text-center select-none"
                   >
                     {skill}
-                  </div>
+                  </CardItem>
                 ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Certifications (Full Width Footer Block) */}
-        <div className="mt-12 sm:mt-16 space-y-3 sm:space-y-4">
-          <h3 className="text-2xl sm:text-3xl font-bold text-white/90 text-left">
-            Certifications
-          </h3>
-          <div className="flex flex-wrap gap-2.5 sm:gap-4 justify-start">
-            {CERTIFICATIONS.map((cert) => (
+        {/* Certifications Section */}
+        <div className="mt-6 sm:mt-8 md:mt-10 space-y-2 sm:space-y-2.5 md:space-y-3">
+          <SectionTitle>Certifications</SectionTitle>
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center lg:justify-start">
+            {certificationsList.map((cert) => (
               <div
                 key={cert.name}
-                className="card-base-class min-w-[140px] sm:min-w-[160px] p-0"
+                className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/20 transition-all duration-300 rounded-lg p-0"
               >
-                <a
+                <CardItem
+                  as="a"
                   href={cert.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View ${cert.name} certification`}
-                  className="px-5 py-3.5 hover:text-black transition-colors duration-300 block w-full h-full text-base sm:text-lg"
+                  className="min-w-[100px] sm:min-w-[110px]"
                 >
                   {cert.name}
-                </a>
+                </CardItem>
               </div>
             ))}
           </div>
